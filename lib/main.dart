@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:go_router/go_router.dart';
 import 'package:vcard/pages/home_page.dart';
+import 'package:vcard/pages/scan_page.dart';
 
 void main() {
   runApp(MyApp());
@@ -12,8 +14,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
+      builder: EasyLoading.init(),
       debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
+      title: 'VCard Project',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
@@ -29,6 +32,13 @@ class MyApp extends StatelessWidget {
         path: HomePage.routeName,
         name: HomePage.routeName,
         builder: (context, state) => const HomePage(),
+        routes: <RouteBase>[
+          GoRoute(
+            path: ScanPage.routeName,
+            name: ScanPage.routeName,
+            builder: (context, state) => const ScanPage(),
+          ),
+        ],
       ),
     ],
   );
