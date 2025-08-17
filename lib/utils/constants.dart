@@ -7,3 +7,5 @@ abstract final class ContactProperties {
   static const String company = 'Company';
   static const String website = 'Website';
 }
+
+const String emptyFieldErrorMessage = 'This field must not be empty';
