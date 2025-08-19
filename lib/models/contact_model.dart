@@ -1,12 +1,24 @@
+const String tableContact = 'tbl_contact';
+const String tblContactColId = 'id';
+const String tblContactColName = 'name';
+const String tblContactColMobile = 'mobile';
+const String tblContactColEmail = 'email';
+const String tblContactColAddress = 'address';
+const String tblContactColCompany = 'company';
+const String tblContactColProfession = 'profession';
+const String tblContactColWebsite = 'website';
+const String tblContactColImage = 'image';
+const String tblContactColFavorite = 'favorite';
+
 class ContactModel {
   int id;
   String name;
   String mobile;
   String email;
-  String address;
-  String company;
   String profession;
+  String company;
   String website;
+  String address;
   String image;
   bool favorite;
 
@@ -15,11 +27,44 @@ class ContactModel {
     required this.name,
     required this.mobile,
     this.email = '',
-    this.address = '',
-    this.company = '',
     this.profession = '',
+    this.company = '',
     this.website = '',
+    this.address = '',
     this.image = '',
     this.favorite = false,
   });
+
+  Map<String, dynamic> toMap() {
+    final map = <String, dynamic>{
+      tblContactColName: name,
+      tblContactColMobile: mobile,
+      tblContactColEmail: email,
+      tblContactColProfession: profession,
+      tblContactColCompany: company,
+      tblContactColWebsite: website,
+      tblContactColAddress: address,
+      tblContactColImage: image,
+      tblContactColFavorite: favorite ? 1 : 0,
+    };
+    if (id > 0) {
+      map[tblContactColId] = id;
+    }
+    return map;
+  }
+
+  factory ContactModel.fromMap(Map<String, dynamic> map) {
+    return ContactModel(
+      id: map[tblContactColId],
+      name: map[tblContactColName],
+      mobile: map[tblContactColMobile],
+      email: map[tblContactColEmail],
+      profession: map[tblContactColProfession],
+      company: map[tblContactColCompany],
+      website: map[tblContactColWebsite],
+      address: map[tblContactColAddress],
+      image: map[tblContactColImage],
+      favorite: map[tblContactColFavorite] == 1 ? true : false,
+    );
+  }
 }
