@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:vcard/pages/scan_page.dart';
 import 'package:vcard/providers/contact_provider.dart';
+import 'package:vcard/utils/helper_functions.dart';
 
 class HomePage extends StatefulWidget {
   static const String routeName = '/';
@@ -65,18 +66,65 @@ class _HomePageState extends State<HomePage> {
               itemCount: provider.contactList.length,
               itemBuilder: (context, index) {
                 final contact = provider.contactList[index];
-                return ListTile(
-                  title: Text(contact.name),
-                  trailing: IconButton(
-                    onPressed: () {},
-                    icon: Icon(
-                      contact.favorite ? Icons.favorite : Icons.favorite_border,
+                return Dismissible(
+                  key: UniqueKey(),
+                  direction: DismissDirection.endToStart,
+                  background: Container(
+                    padding: EdgeInsets.only(right: 20),
+                    color: Colors.red,
+                    alignment: Alignment.centerRight,
+                    child: Icon(Icons.delete_outline, color: Colors.white),
+                  ),
+                  confirmDismiss: _showConfirmationDialog,
+                  onDismissed: (_) async {
+                    await provider.deleteContact(contact.id);
+                    showMessage(context, 'Contact deleted!');
+                  },
+                  child: ListTile(
+                    title: Text(contact.name),
+                    trailing: IconButton(
+                      onPressed: () {
+                        provider.updateFavorite(contact);
+                      },
+                      icon: Icon(
+                        contact.favorite
+                            ? Icons.favorite
+                            : Icons.favorite_border,
+                      ),
                     ),
                   ),
                 );
               },
             ),
       ),
+    );
+  }
+
+  Future<bool?> _showConfirmationDialog(DismissDirection direction) {
+    return showDialog<bool>(
+      context: context,
+      builder:
+          (context) => AlertDialog(
+            title: Text('Delete Contact'),
+            content: Text('Are you sure you want to delete this contact?'),
+            actions: [
+              OutlinedButton(
+                onPressed: () {
+                  context.pop(false);
+                },
+                child: const Text('Cancel'),
+              ),
+              ElevatedButton(
+                style: ButtonStyle(
+                  backgroundColor: WidgetStateProperty.all(Colors.red),
+                ),
+                onPressed: () {
+                  context.pop(true);
+                },
+                child: const Text('OK', style: TextStyle(color: Colors.white)),
+              ),
+            ],
+          ),
     );
   }
 }
