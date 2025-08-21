@@ -19,6 +19,11 @@ class ContactProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<void> getFavoriteContacts() async {
+    contactList = await db.getFavoriteContacts();
+    notifyListeners();
+  }
+
   Future<int> deleteContact(int id) {
     contactList.removeWhere((element) => element.id == id);
     notifyListeners();
