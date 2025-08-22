@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:vcard/pages/contact_details_page.dart';
 import 'package:vcard/pages/scan_page.dart';
 import 'package:vcard/providers/contact_provider.dart';
 import 'package:vcard/utils/helper_functions.dart';
@@ -82,6 +83,11 @@ class _HomePageState extends State<HomePage> {
                     showMessage(context, 'Contact deleted!');
                   },
                   child: ListTile(
+                    onTap:
+                        () => context.goNamed(
+                          ContactDetailsPage.routeName,
+                          extra: contact.id,
+                        ),
                     title: Text(contact.name),
                     trailing: IconButton(
                       onPressed: () {
